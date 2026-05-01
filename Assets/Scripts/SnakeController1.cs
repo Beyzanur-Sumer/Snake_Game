@@ -10,6 +10,7 @@ using System.Linq;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
+
 public class SnakeController : MonoBehaviour
 {
     private Vector2Int foodPosition;
@@ -28,12 +29,12 @@ public class SnakeController : MonoBehaviour
 
     private void Start()
     {
-       
+       SpawnFood();
     }
 
     private void OnMoveSnake(InputValue value)
     {
-        if(!canInput) return;
+        //if(!canInput) return;
 
         Vector2 input = value.Get<Vector2>();
         if (input.x != 0 || input.y != 0)
@@ -42,7 +43,7 @@ public class SnakeController : MonoBehaviour
             if (newDirection != -lastStepDirection)
             {
                 direction = newDirection;
-                canInput = false;
+                //canInput = false;
             }
         }
     }
@@ -54,7 +55,7 @@ public class SnakeController : MonoBehaviour
         moveTimer+= Time.deltaTime;
         if (moveTimer >= moveInterval)
         {
-            BodyMove();
+            // ? BodyMove();
             
             moveTimer = 0f;
         }
@@ -62,8 +63,19 @@ public class SnakeController : MonoBehaviour
     
     private void SpawnFood()
     {  
-        
-      
+        float foodX = foodPrefab.transform.position.x;
+        float foodZ = foodPrefab.transform.position.y;
+
+        if(transform.position.x == foodX && transform.position.y == foodZ)
+        {
+
+            Debug.Log("YEM YENDI!!");
+            foodX = Mathf.Round(Random.Range(-7,8));
+            foodZ = Mathf.Round(Random.Range(-7,8)); 
+            foodPrefab.transform.position = new Vector3(foodX, 1.5f, foodZ);
+            Debug.Log("YERI DEGISTI: " + foodX + ", " + foodZ);
+           
+        }
     }
     
     private void Grow()
