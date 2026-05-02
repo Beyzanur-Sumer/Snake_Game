@@ -63,18 +63,30 @@ public class SnakeController : MonoBehaviour
     
     private void SpawnFood()
     {  
-        float foodX = foodPrefab.transform.position.x;
-        float foodZ = foodPrefab.transform.position.y;
-
-        if(transform.position.x == foodX && transform.position.y == foodZ)
+        int gridSizeX = 1;
+        int gridSizeZ = 1;
+        float headX = transform.position.x / gridSizeX + 1;
+        float headZ = transform.position.z / gridSizeZ + 1;
+        int snakeX = (int)headX;
+        int snakeZ = (int)headZ;
+        Debug.Log("CUBE: " + snakeX + ", " + snakeZ);
+       
+        float appleX = foodPrefab.transform.position.x / gridSizeX + 1;
+        float appleZ = foodPrefab.transform.position.z / gridSizeZ+ 1;
+        int foodX = (int)appleX;
+        int foodZ = (int)appleZ;
+        if(snakeX == foodX && snakeZ == foodZ)
         {
 
             Debug.Log("YEM YENDI!!");
-            foodX = Mathf.Round(Random.Range(-7,8));
-            foodZ = Mathf.Round(Random.Range(-7,8)); 
-            foodPrefab.transform.position = new Vector3(foodX, 1.5f, foodZ);
-            Debug.Log("YERI DEGISTI: " + foodX + ", " + foodZ);
+            int newFoodX = Random.Range(-7,8);
+            int newFoodZ = Random.Range(-7,8); 
+            foodPrefab.transform.position = new Vector3(newFoodX , 1.5f, newFoodZ);
+            Debug.Log("YERI DEGISTI: " + newFoodX  + ", " + newFoodZ);
            
+        }
+        else{
+            Debug.Log("NOT SAME GRID");
         }
     }
     
