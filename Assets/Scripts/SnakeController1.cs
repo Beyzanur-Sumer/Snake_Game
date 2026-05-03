@@ -21,7 +21,7 @@ public class SnakeController : MonoBehaviour
     private float moveTimer = 0f;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI gameOverText;
-    private bool canInput = true; //Input Lock
+    //private bool canInput = true; //Input Lock
     private Vector3 lastStepDirection = Vector3.forward;
     private Vector3 direction = Vector3.forward;
     private List<Transform> bodyParts = new List<Transform>();
@@ -29,7 +29,7 @@ public class SnakeController : MonoBehaviour
 
     private void Start()
     {
-       SpawnFood();
+       
     }
 
     private void OnMoveSnake(InputValue value)
@@ -46,17 +46,16 @@ public class SnakeController : MonoBehaviour
                 //canInput = false;
             }
         }
+        
     }
-
-   
 
     private void Update()
     {
         moveTimer+= Time.deltaTime;
         if (moveTimer >= moveInterval)
         {
-            // ? BodyMove();
-            
+            lastStepDirection = direction;
+            transform.position += direction;
             moveTimer = 0f;
         }
     }
@@ -78,14 +77,15 @@ public class SnakeController : MonoBehaviour
         if(snakeX == foodX && snakeZ == foodZ)
         {
 
-            Debug.Log("YEM YENDI!!");
+            Debug.Log("FOOD WAS EATEN!!");
             int newFoodX = Random.Range(-7,8);
             int newFoodZ = Random.Range(-7,8); 
             foodPrefab.transform.position = new Vector3(newFoodX , 1.5f, newFoodZ);
-            Debug.Log("YERI DEGISTI: " + newFoodX  + ", " + newFoodZ);
+            Debug.Log("POSITION HAS CHANGED: " + newFoodX  + ", " + newFoodZ);
            
         }
-        else{
+        else
+        {
             Debug.Log("NOT SAME GRID");
         }
     }
