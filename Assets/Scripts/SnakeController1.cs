@@ -26,12 +26,6 @@ public class SnakeController : MonoBehaviour
     private Vector3 direction = Vector3.forward;
     private List<Transform> bodyParts = new List<Transform>();
    
-
-    private void Start()
-    {
-       
-    }
-
     private void OnMoveSnake(InputValue value)
     {
         //if(!canInput) return;
@@ -46,7 +40,6 @@ public class SnakeController : MonoBehaviour
                 //canInput = false;
             }
         }
-        
     }
 
     private void Update()
@@ -57,11 +50,13 @@ public class SnakeController : MonoBehaviour
             lastStepDirection = direction;
             transform.position += direction;
             moveTimer = 0f;
+            //SpawnFood();
         }
     }
     
     private void SpawnFood()
-    {  
+    {   
+        //yilanin pozisyonunu gride cevirdim
         int gridSizeX = 1;
         int gridSizeZ = 1;
         float headX = transform.position.x / gridSizeX + 1;
@@ -69,7 +64,8 @@ public class SnakeController : MonoBehaviour
         int snakeX = (int)headX;
         int snakeZ = (int)headZ;
         Debug.Log("CUBE: " + snakeX + ", " + snakeZ);
-       
+        
+        //yemin pozisyonunu gride cevirdim ve yemi isinladim
         float appleX = foodPrefab.transform.position.x / gridSizeX + 1;
         float appleZ = foodPrefab.transform.position.z / gridSizeZ+ 1;
         int foodX = (int)appleX;
@@ -80,7 +76,7 @@ public class SnakeController : MonoBehaviour
             Debug.Log("FOOD WAS EATEN!!");
             int newFoodX = Random.Range(-7,8);
             int newFoodZ = Random.Range(-7,8); 
-            foodPrefab.transform.position = new Vector3(newFoodX , 1.5f, newFoodZ);
+            foodPrefab.transform.position = new Vector3(newFoodX + 0.5f, 1.5f, newFoodZ + 0.5f);
             Debug.Log("POSITION HAS CHANGED: " + newFoodX  + ", " + newFoodZ);
            
         }
@@ -88,17 +84,6 @@ public class SnakeController : MonoBehaviour
         {
             Debug.Log("NOT SAME GRID");
         }
-    }
-    
-    private void Grow()
-    {
-        
-    }
-   
-    
-    private void BodyMove()
-    {   
-        
     }
     
     private void ScoreText()
