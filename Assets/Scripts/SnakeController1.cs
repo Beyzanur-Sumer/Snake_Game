@@ -1,5 +1,5 @@
 
-
+using System.Collections;
 using JetBrains.Annotations;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -18,7 +18,7 @@ public class SnakeController : MonoBehaviour
     public GameObject bodyPrefab;
     private int score = 0;
     public float moveInterval = 0.2f;
-    private float moveTimer = 0f;
+    public float moveTimer = 0f;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI gameOverText;
     //private bool canInput = true; //Input Lock
@@ -40,50 +40,18 @@ public class SnakeController : MonoBehaviour
                 //canInput = false;
             }
         }
+        lastStepDirection = direction;
     }
 
-    private void Update()
+    private void Start()
     {
-        moveTimer+= Time.deltaTime;
-        if (moveTimer >= moveInterval)
-        {
-            lastStepDirection = direction;
-            transform.position += direction;
-            moveTimer = 0f;
-            //SpawnFood();
-        }
+       InvokeRepeating("MoveSnake", 0f, moveInterval);
     }
-    
-    private void SpawnFood()
-    {   
-        //yilanin pozisyonunu gride cevirdim
-        int gridSizeX = 1;
-        int gridSizeZ = 1;
-        float headX = transform.position.x / gridSizeX + 1;
-        float headZ = transform.position.z / gridSizeZ + 1;
-        int snakeX = (int)headX;
-        int snakeZ = (int)headZ;
-        Debug.Log("CUBE: " + snakeX + ", " + snakeZ);
-        
-        //yemin pozisyonunu gride cevirdim ve yemi isinladim
-        float appleX = foodPrefab.transform.position.x / gridSizeX + 1;
-        float appleZ = foodPrefab.transform.position.z / gridSizeZ+ 1;
-        int foodX = (int)appleX;
-        int foodZ = (int)appleZ;
-        if(snakeX == foodX && snakeZ == foodZ)
-        {
 
-            Debug.Log("FOOD WAS EATEN!!");
-            int newFoodX = Random.Range(-7,8);
-            int newFoodZ = Random.Range(-7,8); 
-            foodPrefab.transform.position = new Vector3(newFoodX + 0.5f, 1.5f, newFoodZ + 0.5f);
-            Debug.Log("POSITION HAS CHANGED: " + newFoodX  + ", " + newFoodZ);
-           
-        }
-        else
-        {
-            Debug.Log("NOT SAME GRID");
-        }
+    private void MoveSnake()
+    {
+        transform.position += direction;
+        Debug.Log( transform.position.x + " " + transform.position.z);
     }
     
     private void ScoreText()
