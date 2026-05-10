@@ -40,18 +40,36 @@ public class SnakeController : MonoBehaviour
                 //canInput = false;
             }
         }
+
         lastStepDirection = direction;
     }
 
     private void Start()
     {
-       InvokeRepeating("MoveSnake", 0f, moveInterval);
+       InvokeRepeating("AllControls", 0f, moveInterval);
     }
 
-    private void MoveSnake()
+    private void AllControls()
     {
         transform.position += direction;
-        Debug.Log( transform.position.x + " " + transform.position.z);
+        
+        if (transform.position.x == foodPrefab.transform.position.x && transform.position.z == foodPrefab.transform.position.z)
+        {
+           ScoreText();
+           FoodSpawn();
+        }
+
+        if (transform.position.x < -7 || transform.position.x > 7 || transform.position.z < -7 || transform.position.z > 7)
+        {
+            GameOverText();
+        }
+    }
+
+    private void FoodSpawn()
+    {
+        int newFoodX = Random.Range(-7,8);
+        int newFoodZ = Random.Range(-7,8); 
+        foodPrefab.transform.position = new Vector3(newFoodX , 1.5f, newFoodZ);
     }
     
     private void ScoreText()
