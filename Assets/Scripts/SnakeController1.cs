@@ -40,7 +40,7 @@ public class SnakeController : MonoBehaviour
                 //canInput = false;
             }
         }
-
+        
         lastStepDirection = direction;
     }
 
@@ -61,6 +61,7 @@ public class SnakeController : MonoBehaviour
 
         if (transform.position.x < -7 || transform.position.x > 7 || transform.position.z < -7 || transform.position.z > 7)
         {
+            scoreText.gameObject.SetActive(false);
             GameOverText();
         }
     }
@@ -79,8 +80,8 @@ public class SnakeController : MonoBehaviour
     }
 
     private void GameOverText()
-    {
-        gameOverText.gameObject.SetActive(true);
+    {  
+        gameOverText.text = "Game Over!   High Score:" + score.ToString();
         Time.timeScale = 0f; //Game is paused.
     }
 }
