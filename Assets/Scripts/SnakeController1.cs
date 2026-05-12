@@ -25,7 +25,8 @@ public class SnakeController : MonoBehaviour
     private Vector3 lastStepDirection = Vector3.forward;
     private Vector3 direction = Vector3.forward;
     private List<Transform> bodyParts = new List<Transform>();
-   
+    private Vector3Int headGridPos;
+    private Vector3Int foodGridPos;
     private void OnMoveSnake(InputValue value)
     {
         //if(!canInput) return;
@@ -46,23 +47,56 @@ public class SnakeController : MonoBehaviour
 
     private void Start()
     {
+       bodyParts.Add(transform);
        InvokeRepeating("AllControls", 0f, moveInterval);
+      
+    }
+    
+    private void Update()
+    { 
+        moveTimer+= Time.deltaTime;
+        if (moveTimer >= moveInterval)
+        {
+            if(bodyParts.Count > 1)
+            {
+               BodyMovement();
+            }
+            moveTimer = 0f;
+        }
     }
 
+    
     private void AllControls()
     {
         transform.position += direction;
+        headGridPos = new Vector3Int(Mathf.RoundToInt(transform.position.x),0, Mathf.RoundToInt(transform.position.z));
+        foodGridPos = new Vector3Int(Mathf.RoundToInt(foodPrefab.transform.position.x),0, Mathf.RoundToInt(foodPrefab.transform.position.z));
         
-        if (transform.position.x == foodPrefab.transform.position.x && transform.position.z == foodPrefab.transform.position.z)
+        if (headGridPos.x == foodGridPos.x && headGridPos.z == foodGridPos.z)
         {
            ScoreText();
+           BodySpawn();
            FoodSpawn();
         }
 
-        if (transform.position.x < -7 || transform.position.x > 7 || transform.position.z < -7 || transform.position.z > 7)
+        if (headGridPos.x < -7 || headGridPos.x > 7 || headGridPos.z < -7 || headGridPos.z > 7)
         {
             scoreText.gameObject.SetActive(false);
             GameOverText();
+        }
+    }
+
+    private void BodySpawn()
+    {
+        GameObject bodyPart = Instantiate(bodyPrefab, transform.position - direction, Quaternion.identity);
+        bodyParts.Add(bodyPart.transform);
+    }
+
+    private void BodyMovement()
+    {
+        if(bodyParts.Count > 1)
+        {
+            bodyParts[bodyParts.Count - 1].position += direction; //???????????????????????????????????????????????????????????????????????????????????????????????????????
         }
     }
 
